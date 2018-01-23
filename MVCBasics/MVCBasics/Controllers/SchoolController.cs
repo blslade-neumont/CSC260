@@ -9,13 +9,22 @@ namespace MVCBasics.Controllers
 {
     public class SchoolController : Controller
     {
-        public SchoolController()
+        public SchoolController(SchoolService schoolService, TeacherService teacherService, StudentService studentService)
         {
+            this.schoolService = schoolService;
+            this.teacherService = teacherService;
+            this.studentService = studentService;
         }
+
+        private SchoolService schoolService;
+        private TeacherService teacherService;
+        private StudentService studentService;
 
         public IActionResult ShowAll()
         {
-            var school = SchoolService.FindAll().First();
+            var school = schoolService.DefaultSchool;
+            school.Students = studentService.FindAll().ToArray();
+            school.Teachers = teacherService.FindAll().ToArray();
             return View(school);
         }
 
@@ -28,7 +37,7 @@ namespace MVCBasics.Controllers
         {
             if (ModelState.IsValid)
             {
-                StudentService.Create(student);
+                studentService.Create(student);
                 return RedirectToAction("ShowAll");
             }
             else
@@ -46,7 +55,7 @@ namespace MVCBasics.Controllers
         {
             if (ModelState.IsValid)
             {
-                TeacherService.Create(teacher);
+                teacherService.Create(teacher);
                 return RedirectToAction("ShowAll");
             }
             else

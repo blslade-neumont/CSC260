@@ -18,8 +18,9 @@ namespace MVCBasics.Models
             this.Gender = Gender;
             this.YearsTaught = yearsTaught;
             this.Status = status;
-            this.School = school ?? SchoolService.FindAll().FirstOrDefault();
         }
+
+        public int Id;
 
         [Required, MaxLength(50)]
         public string Name { get; set; }

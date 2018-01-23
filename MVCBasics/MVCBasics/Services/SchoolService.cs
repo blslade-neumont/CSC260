@@ -6,25 +6,19 @@ using System.Threading.Tasks;
 
 namespace MVCBasics
 {
-    public class SchoolService
+    public class SchoolService : LocalCrudService<School>
     {
-        private static List<School> _schools = new List<School>() { new School("Neumont College of Computer Science") };
+        public SchoolService()
+        {
+            CreateSchools();
+        }
         
-        public static School Create(School school)
+        private void CreateSchools()
         {
-            _schools.Add(school);
-            return school;
+            School neumont = new School("Neumont College of Computer Science");
+            this.DefaultSchool = Create(neumont);
         }
-        public static IEnumerable<School> FindAll()
-        {
-            foreach (var school in _schools)
-            {
-                var students = StudentService.FindAll().Where(student => student.School == school).ToArray();
-                var teachers = TeacherService.FindAll().Where(teacher => teacher.School == school).ToArray();
-                school.Students = students;
-                school.Teachers = teachers;
-                yield return school;
-            }
-        }
+
+        public School DefaultSchool { get; private set; }
     }
 }

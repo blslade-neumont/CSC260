@@ -7,7 +7,7 @@ namespace MVCBasics
 {
     public enum Degree
     {
-        BSGS,
+        BSGD,
         BSCS,
         BSWD,
         BSIS,

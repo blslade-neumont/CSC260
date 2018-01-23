@@ -23,8 +23,9 @@ namespace MVCBasics.Models
             this.Cohort = cohort;
             this.Degree = degree;
             this.GraduationDate = graduationDate;
-            this.School = school ?? SchoolService.FindAll().FirstOrDefault();
         }
+
+        public int Id;
 
         [Required, MaxLength(20)]
         public string Name { get; set; }

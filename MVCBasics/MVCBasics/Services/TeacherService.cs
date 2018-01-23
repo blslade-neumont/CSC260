@@ -6,37 +6,26 @@ using System.Threading.Tasks;
 
 namespace MVCBasics
 {
-    public class TeacherService
+    public class TeacherService : LocalCrudService<Teacher>
     {
-        private static List<Teacher> _teachers = new List<Teacher>();
-
-        static TeacherService()
+        public TeacherService()
         {
             CreateTeachers();
         }
-        private static void CreateTeachers()
+
+        private void CreateTeachers()
         {
             Teacher Fahim = new Teacher("Fahim", Gender.Male, 2, TeacherStatus.Adjunct);
-            TeacherService.Create(Fahim);
+            Create(Fahim);
 
             Teacher Beatty = new Teacher("Beatty", Gender.Male, 6, TeacherStatus.FullTime);
-            TeacherService.Create(Beatty);
+            Create(Beatty);
 
             Teacher Lamb = new Teacher("Lamb", Gender.Male, 4, TeacherStatus.FullTime);
-            TeacherService.Create(Lamb);
+            Create(Lamb);
 
             Teacher Ray = new Teacher("Ray", Gender.Male, 1, TeacherStatus.FullTime);
-            TeacherService.Create(Ray);
-        }
-
-        public static Teacher Create(Teacher teacher)
-        {
-            _teachers.Add(teacher);
-            return teacher;
-        }
-        public static IEnumerable<Teacher> FindAll()
-        {
-            return _teachers.AsEnumerable();
+            Create(Ray);
         }
     }
 }

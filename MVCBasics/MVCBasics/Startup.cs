@@ -22,6 +22,10 @@ namespace MVCBasics
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddSingleton<SchoolService>();
+            services.AddSingleton<TeacherService>();
+            services.AddSingleton<StudentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

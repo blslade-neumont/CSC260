@@ -13,6 +13,8 @@ namespace MVCBasics.Models
             this.Name = name;
         }
 
+        public int Id;
+
         [Required]
         public string Name { get; set; }
         public Teacher[] Teachers { get; set; }
