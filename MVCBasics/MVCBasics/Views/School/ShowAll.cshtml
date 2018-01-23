@@ -1,0 +1,61 @@
+﻿@model MVCBasics.Models.School
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+
+<h2>Teachers</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Years Taught</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var teacher in @Model.Teachers)
+        {
+            <tr>
+                <td>@teacher.Name</td>
+                <td>@teacher.Gender.ToString()</td>
+                <td>@teacher.YearsTaught years</td>
+                <td>@teacher.Status.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Create New", "CreateTeacher")
+
+<h2>Students</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Cohort</th>
+            <th>Degree</th>
+            <th>Graduation Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in @Model.Students)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Gender.ToString()</td>
+                <td>Cohort @student.Cohort</td>
+                <td>@(student.Degree == null ? "None" : student.Degree.Value.ToString())</td>
+                <td>
+                    @if (student.Degree != null)
+                    {
+                        @(student.GraduationDate == null ? "None" : student.GraduationDate.Value.ToString("dd MMM yyyy"))
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Create New", "CreateStudent")

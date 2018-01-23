@@ -1,0 +1,49 @@
+﻿@model object
+@{ 
+    var modelType = ViewData.ModelMetadata.ModelType;
+    var nullableType = Nullable.GetUnderlyingType(modelType);
+    var includeNull = false;
+    if (nullableType != null)
+    {
+        includeNull = true;
+        modelType = nullableType;
+    }
+    var isEnum = modelType.IsEnum;
+}
+@if (isEnum)
+{
+    var items = Html.GetEnumSelectList(modelType);
+    var currentSelected = Model == null ? "" : modelType.GetEnumName(Model);
+    <select class="form-control" id="@Html.IdForModel()" name="@Html.NameForModel()">
+        @if (includeNull)
+        {
+            if (Model == null)
+            {
+                <option value="" selected="selected">None</option>
+            }
+            else
+            {
+                <option value="">None</option>
+            }
+        }
+        @foreach (SelectListItem item in items)
+        {
+            if (Model != null && Model.ToString() == currentSelected)
+            {
+                <option value="@item.Text" selected="selected">@item.Text</option>
+            }
+            else
+            {
+                <option value="@item.Text">@item.Text</option>
+            }
+        }
+    </select>
+}
+else
+{
+    @Html.TextBox(
+        "",
+        ViewData.TemplateInfo.FormattedModelValue,
+        new { @class = "text-box single-line form-control" }
+    )
+}
