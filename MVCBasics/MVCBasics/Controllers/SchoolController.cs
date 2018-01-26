@@ -25,6 +25,8 @@ namespace MVCBasics.Controllers
             var school = schoolService.DefaultSchool;
             school.Students = studentService.FindAll().ToArray();
             school.Teachers = teacherService.FindAll().ToArray();
+            ViewBag.studentStats  = studentService.GetStatistics();
+            ViewBag.teacherStats = teacherService.GetStatistics();
             return View(school);
         }
 

@@ -27,5 +27,25 @@ namespace MVCBasics
             Teacher Ray = new Teacher("Ray", Gender.Male, 1, TeacherStatus.FullTime);
             Create(Ray);
         }
+
+        public dynamic GetStatistics()
+        {
+            var allTeachers = this.FindAll().ToArray();
+            return new Anon(new
+            {
+                Count = allTeachers.Length,
+                Genders = new Anon(new
+                {
+                    Male = allTeachers.Length == 0 ? 0 : Math.Floor(((double)allTeachers.Count(s => s.Gender == Gender.Male) / allTeachers.Length) * 100d),
+                    Female = allTeachers.Length == 0 ? 0 : Math.Floor(((double)allTeachers.Count(s => s.Gender == Gender.Female) / allTeachers.Length) * 100d)
+                }),
+                Status = new Anon(new
+                {
+                    FullTime = allTeachers.Length == 0 ? 0 : Math.Floor(((double)allTeachers.Count(s => s.Status == TeacherStatus.FullTime) / allTeachers.Length) * 100d),
+                    Adjunct = allTeachers.Length == 0 ? 0 : Math.Floor(((double)allTeachers.Count(s => s.Status == TeacherStatus.Adjunct) / allTeachers.Length) * 100d)
+                }),
+                AverageYearsTaught = allTeachers.Length == 0 ? 0 : (double)allTeachers.Aggregate(0, (old, t) => old + t.YearsTaught) / allTeachers.Length
+            });
+        }
     }
 }
