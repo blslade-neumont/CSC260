@@ -23,6 +23,10 @@
                 <td>@teacher.Gender.ToString()</td>
                 <td>@teacher.YearsTaught years</td>
                 <td>@teacher.Status.ToString()</td>
+                <td>
+                    @Html.ActionLink("Edit", "EditTeacher", new { Id = teacher.Id });
+                    @Html.ActionLink("Destroy", "DestroyTeacher", new { Id = teacher.Id })
+                </td>
             </tr>
         }
     </tbody>
@@ -53,6 +57,10 @@
                     {
                         @(student.GraduationDate == null ? "None" : student.GraduationDate.Value.ToString("dd MMM yyyy"))
                     }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditStudent", new { Id = student.Id });
+                    @Html.ActionLink("Destroy", "DestroyStudent", new { Id = student.Id })
                 </td>
             </tr>
         }

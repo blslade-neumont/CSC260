@@ -30,7 +30,7 @@ namespace MVCBasics.Controllers
 
         public IActionResult CreateStudent()
         {
-            return View(new Student());
+            return View("EditStudent", new Student());
         }
         [HttpPost]
         public IActionResult CreateStudent(Student student)
@@ -42,8 +42,34 @@ namespace MVCBasics.Controllers
             }
             else
             {
+                return View("EditStudent", student);
+            }
+        }
+
+        public IActionResult EditStudent(int id)
+        {
+            var student = this.studentService.Get(id);
+            return View(student);
+        }
+        [HttpPost]
+        public IActionResult EditStudent(int id, Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                student.Id = id;
+                studentService.Update(student);
+                return RedirectToAction("ShowAll");
+            }
+            else
+            {
                 return View(student);
             }
+        }
+        
+        public IActionResult DestroyStudent(int id)
+        {
+            this.studentService.Destroy(id);
+            return RedirectToAction("ShowAll");
         }
 
         public IActionResult CreateTeacher()
@@ -62,6 +88,32 @@ namespace MVCBasics.Controllers
             {
                 return View(teacher);
             }
+        }
+
+        public IActionResult EditTeacher(int id)
+        {
+            var teacher = this.teacherService.Get(id);
+            return View(teacher);
+        }
+        [HttpPost]
+        public IActionResult EditTeacher(int id, Teacher teacher)
+        {
+            if (ModelState.IsValid)
+            {
+                teacher.Id = id;
+                teacherService.Update(teacher);
+                return RedirectToAction("ShowAll");
+            }
+            else
+            {
+                return View(teacher);
+            }
+        }
+        
+        public IActionResult DestroyTeacher(int id)
+        {
+            this.teacherService.Destroy(id);
+            return RedirectToAction("ShowAll");
         }
     }
 }
