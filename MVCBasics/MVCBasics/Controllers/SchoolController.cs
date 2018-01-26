@@ -54,9 +54,9 @@ namespace MVCBasics.Controllers
         [HttpPost]
         public IActionResult EditStudent(int id, Student student)
         {
+            student.Id = id;
             if (ModelState.IsValid)
             {
-                student.Id = id;
                 studentService.Update(student);
                 return RedirectToAction("ShowAll");
             }
@@ -74,7 +74,7 @@ namespace MVCBasics.Controllers
 
         public IActionResult CreateTeacher()
         {
-            return View(new Teacher());
+            return View("EditTeacher", new Teacher());
         }
         [HttpPost]
         public IActionResult CreateTeacher(Teacher teacher)
@@ -86,7 +86,7 @@ namespace MVCBasics.Controllers
             }
             else
             {
-                return View(teacher);
+                return View("EditTeacher", teacher);
             }
         }
 
@@ -98,9 +98,9 @@ namespace MVCBasics.Controllers
         [HttpPost]
         public IActionResult EditTeacher(int id, Teacher teacher)
         {
+            teacher.Id = id;
             if (ModelState.IsValid)
             {
-                teacher.Id = id;
                 teacherService.Update(teacher);
                 return RedirectToAction("ShowAll");
             }

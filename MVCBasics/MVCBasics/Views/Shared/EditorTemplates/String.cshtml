@@ -13,7 +13,7 @@
 @if (isEnum)
 {
     var items = Html.GetEnumSelectList(modelType);
-    var currentSelected = Model == null ? "" : modelType.GetEnumName(Model);
+    var currentSelected = Model == null ? "<NONE>" : modelType.GetEnumName(Model);
     <select class="form-control" id="@Html.IdForModel()" name="@Html.NameForModel()">
         @if (includeNull)
         {
@@ -28,7 +28,7 @@
         }
         @foreach (SelectListItem item in items)
         {
-            if (Model != null && Model.ToString() == currentSelected)
+            if (Model != null && item.Text == currentSelected)
             {
                 <option value="@item.Text" selected="selected">@item.Text</option>
             }
