@@ -9,24 +9,29 @@ namespace MVCBasics.Controllers
 {
     public class SchoolController : Controller
     {
-        public SchoolController(SchoolService schoolService, TeacherService teacherService, StudentService studentService)
+        public SchoolController(SchoolService schoolService, TeacherService teacherService, StudentService studentService, StatisticsService statisticsService)
         {
             this.schoolService = schoolService;
             this.teacherService = teacherService;
             this.studentService = studentService;
+            this.statisticsService = statisticsService;
         }
 
         private SchoolService schoolService;
         private TeacherService teacherService;
         private StudentService studentService;
+        private StatisticsService statisticsService;
 
         public IActionResult ShowAll()
         {
             var school = schoolService.DefaultSchool;
             school.Students = studentService.FindAll().ToArray();
             school.Teachers = teacherService.FindAll().ToArray();
-            ViewBag.studentStats  = studentService.GetStatistics();
-            ViewBag.teacherStats = teacherService.GetStatistics();
+
+            var stats = statisticsService.GetStatistics();
+            ViewBag.studentStats = stats.Student;
+            ViewBag.teacherStats = stats.Teacher;
+
             return View(school);
         }
 

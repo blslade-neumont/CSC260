@@ -26,6 +26,7 @@ namespace MVCBasics
             services.AddSingleton<SchoolService>();
             services.AddSingleton<TeacherService>();
             services.AddSingleton<StudentService>();
+            services.AddSingleton<StatisticsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
