@@ -9,23 +9,24 @@ namespace MVCBasics.Controllers
 {
     public class SchoolController : Controller
     {
-        public SchoolController(SchoolService schoolService, TeacherService teacherService, StudentService studentService)
+        public SchoolController(ICrudService<Teacher> teacherService, ICrudService<Student> studentService)
         {
-            this.schoolService = schoolService;
             this.teacherService = teacherService;
             this.studentService = studentService;
         }
 
-        private SchoolService schoolService;
-        private TeacherService teacherService;
-        private StudentService studentService;
+        private ICrudService<Teacher> teacherService;
+        private ICrudService<Student> studentService;
         private StatisticsService statisticsService;
 
-        public IActionResult ShowAll()
+        public async Task<IActionResult> ShowAll()
         {
-            var school = schoolService.DefaultSchool;
-            school.Students = studentService.FindAll().ToArray();
-            school.Teachers = teacherService.FindAll().ToArray();
+            var school = new SchoolViewModel()
+            {
+                Name = "Neumont College of Computer Science",
+                Students = (await studentService.FindAllAsync()).ToArray(),
+                Teachers = (await teacherService.FindAllAsync()).ToArray()
+            };
             return View(school);
         }
 
@@ -34,11 +35,11 @@ namespace MVCBasics.Controllers
             return View("EditStudent", new Student());
         }
         [HttpPost]
-        public IActionResult CreateStudent(Student student)
+        public async Task<IActionResult> CreateStudent(Student student)
         {
             if (ModelState.IsValid)
             {
-                studentService.Create(student);
+                await studentService.CreateAsync(student);
                 return RedirectToAction("ShowAll");
             }
             else
@@ -47,18 +48,18 @@ namespace MVCBasics.Controllers
             }
         }
 
-        public IActionResult EditStudent(int id)
+        public async Task<IActionResult> EditStudent(int id)
         {
-            var student = this.studentService.Get(id);
+            var student = await this.studentService.GetAsync(id);
             return View(student);
         }
         [HttpPost]
-        public IActionResult EditStudent(int id, Student student)
+        public async Task<IActionResult> EditStudent(int id, Student student)
         {
             student.Id = id;
             if (ModelState.IsValid)
             {
-                studentService.Update(student);
+                await studentService.UpdateAsync(student);
                 return RedirectToAction("ShowAll");
             }
             else
@@ -67,9 +68,9 @@ namespace MVCBasics.Controllers
             }
         }
         
-        public IActionResult DestroyStudent(int id)
+        public async Task<IActionResult> DestroyStudent(int id)
         {
-            this.studentService.Destroy(id);
+            await this.studentService.DestroyAsync(id);
             return RedirectToAction("ShowAll");
         }
 
@@ -78,11 +79,11 @@ namespace MVCBasics.Controllers
             return View("EditTeacher", new Teacher());
         }
         [HttpPost]
-        public IActionResult CreateTeacher(Teacher teacher)
+        public async Task<IActionResult> CreateTeacher(Teacher teacher)
         {
             if (ModelState.IsValid)
             {
-                teacherService.Create(teacher);
+                await teacherService.CreateAsync(teacher);
                 return RedirectToAction("ShowAll");
             }
             else
@@ -91,18 +92,18 @@ namespace MVCBasics.Controllers
             }
         }
 
-        public IActionResult EditTeacher(int id)
+        public async Task<IActionResult> EditTeacher(int id)
         {
-            var teacher = this.teacherService.Get(id);
+            var teacher = await this.teacherService.GetAsync(id);
             return View(teacher);
         }
         [HttpPost]
-        public IActionResult EditTeacher(int id, Teacher teacher)
+        public async Task<IActionResult> EditTeacher(int id, Teacher teacher)
         {
             teacher.Id = id;
             if (ModelState.IsValid)
             {
-                teacherService.Update(teacher);
+                await teacherService.UpdateAsync(teacher);
                 return RedirectToAction("ShowAll");
             }
             else
@@ -111,9 +112,9 @@ namespace MVCBasics.Controllers
             }
         }
         
-        public IActionResult DestroyTeacher(int id)
+        public async Task<IActionResult> DestroyTeacher(int id)
         {
-            this.teacherService.Destroy(id);
+            await this.teacherService.DestroyAsync(id);
             return RedirectToAction("ShowAll");
         }
     }

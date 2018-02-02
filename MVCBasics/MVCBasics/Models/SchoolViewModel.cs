@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace MVCBasics.Models
 {
-    public class MeViewModel
+    public class SchoolViewModel
     {
         public string Name { get; set; }
-        public string Email { get; set; }
+        public Student[] Students { get; set; }
+        public Teacher[] Teachers { get; set; }
     }
 }

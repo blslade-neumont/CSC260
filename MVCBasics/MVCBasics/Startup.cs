@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MVCBasics.Models;
 
 namespace MVCBasics
 {
@@ -21,12 +23,26 @@ namespace MVCBasics
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            var dbConfig = Configuration.GetSection("DbContextSettings").Get<DbContextSettings>();
+            services.AddSingleton(dbConfig);
+            
+            if (dbConfig.Enabled)
+            {
+                services.AddDbContext<SchoolDbContext>(opts => opts.UseSqlServer(dbConfig.ConnectionString), ServiceLifetime.Singleton, ServiceLifetime.Singleton);
 
-            services.AddSingleton<SchoolService>();
-            services.AddSingleton<TeacherService>();
-            services.AddSingleton<StudentService>();
+                services.AddSingleton<ICrudService<Teacher>, DbTeacherService>();
+                services.AddSingleton<ICrudService<Student>, DbStudentService>();
+            }
+            else
+            {
+                services.AddSingleton<ICrudService<Teacher>, LocalTeacherService>();
+                services.AddSingleton<ICrudService<Student>, LocalStudentService>();
+            }
+
+            services.AddSingleton<SchoolDbInitializer>();
             services.AddSingleton<StatisticsService>();
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

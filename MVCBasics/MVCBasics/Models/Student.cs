@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,24 +9,8 @@ namespace MVCBasics.Models
 {
     public class Student
     {
-        public Student()
-            : this("", Gender.Male, 33)
-        {
-        }
-        public Student(string name, Gender gender, int cohort, School school = null)
-            : this(name, gender, cohort, null, null, null)
-        {
-        }
-        public Student(string name, Gender gender, int cohort, Degree? degree, DateTime? graduationDate, School school = null)
-        {
-            this.Name = name;
-            this.Gender = gender;
-            this.Cohort = cohort;
-            this.Degree = degree;
-            this.GraduationDate = graduationDate;
-        }
-
-        public int Id;
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required, MaxLength(20)]
         public string Name { get; set; }
@@ -36,6 +21,5 @@ namespace MVCBasics.Models
         public Degree? Degree { get; set; }
         [InFuture, RequiredWithDegree, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? GraduationDate { get; set; }
-        public School School { get; set; }
     }
 }
