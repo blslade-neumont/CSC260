@@ -17,7 +17,6 @@ namespace MVCBasics.Controllers
 
         private ICrudService<Teacher> teacherService;
         private ICrudService<Student> studentService;
-        private StatisticsService statisticsService;
 
         public async Task<IActionResult> ShowAll()
         {
@@ -56,7 +55,6 @@ namespace MVCBasics.Controllers
         [HttpPost]
         public async Task<IActionResult> EditStudent(int id, Student student)
         {
-            student.Id = id;
             if (ModelState.IsValid)
             {
                 await studentService.UpdateAsync(student);
@@ -100,7 +98,6 @@ namespace MVCBasics.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTeacher(int id, Teacher teacher)
         {
-            teacher.Id = id;
             if (ModelState.IsValid)
             {
                 await teacherService.UpdateAsync(teacher);

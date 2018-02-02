@@ -28,10 +28,10 @@ namespace MVCBasics
             
             if (dbConfig.Enabled)
             {
-                services.AddDbContext<SchoolDbContext>(opts => opts.UseSqlServer(dbConfig.ConnectionString), ServiceLifetime.Singleton, ServiceLifetime.Singleton);
+                services.AddDbContext<SchoolDbContext>(opts => opts.UseSqlServer(dbConfig.ConnectionString));
 
-                services.AddSingleton<ICrudService<Teacher>, DbTeacherService>();
-                services.AddSingleton<ICrudService<Student>, DbStudentService>();
+                services.AddScoped<ICrudService<Teacher>, DbTeacherService>();
+                services.AddScoped<ICrudService<Student>, DbStudentService>();
             }
             else
             {
@@ -39,8 +39,8 @@ namespace MVCBasics
                 services.AddSingleton<ICrudService<Student>, LocalStudentService>();
             }
 
-            services.AddSingleton<SchoolDbInitializer>();
-            services.AddSingleton<StatisticsService>();
+            //services.AddSingleton<SchoolDbInitializer>();
+            services.AddScoped<StatisticsService>();
 
             services.AddMvc();
         }
@@ -64,7 +64,7 @@ namespace MVCBasics
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=School}/{action=ShowAll}/{id?}");
             });
         }
     }

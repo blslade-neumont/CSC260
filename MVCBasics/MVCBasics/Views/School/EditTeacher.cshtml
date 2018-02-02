@@ -16,6 +16,8 @@
                     
                     <fieldset>
 
+                        @Html.HiddenFor(model => model.Id)
+
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name)
                             @Html.EditorFor(model => model.Name)
