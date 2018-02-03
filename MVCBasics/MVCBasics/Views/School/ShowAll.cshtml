@@ -3,9 +3,20 @@
     ViewData["Title"] = Model.Name;
 }
 
+<img src="~/images/nu.png" class="full-width" style="margin-top: -50px;" />
+
 <h1>@Model.Name</h1>
 
-<h2>Teachers</h2>
+<div class="clearfix">
+    <div class="float-left">
+        <h2>Teachers</h2>
+    </div>
+    <div class="float-right" style="margin-top: 2em;">
+        <a class="btn btn-primary" href="@Url.Action("CreateTeacher")">
+            <i class="fas fa-plus mr-2"></i>Create New
+        </a>
+    </div>
+</div>
 <table>
     <thead>
         <tr>
@@ -25,16 +36,30 @@
                 <td>@teacher.YearsTaught years</td>
                 <td>@teacher.Status.ToString()</td>
                 <td>
-                    @Html.ActionLink("Edit", "EditTeacher", new { Id = teacher.Id });
-                    @Html.ActionLink("Destroy", "DestroyTeacher", new { Id = teacher.Id })
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-primary" href="@Url.Action("EditTeacher", new { Id=teacher.Id })">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a class="btn btn-danger" href="@Url.Action("DestroyTeacher", new { Id = teacher.Id })">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@Html.ActionLink("Create New", "CreateTeacher")
 
-<h2>Students</h2>
+<div class="clearfix">
+    <div class="float-left">
+        <h2>Students</h2>
+    </div>
+    <div class="float-right" style="margin-top: 2em;">
+        <a class="btn btn-primary" href="@Url.Action("CreateStudent")">
+            <i class="fas fa-plus mr-2"></i>Create New
+        </a>
+    </div>
+</div>
 <table>
     <thead>
         <tr>
@@ -61,14 +86,19 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditStudent", new { Id = student.Id });
-                    @Html.ActionLink("Destroy", "DestroyStudent", new { Id = student.Id })
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-primary" href="@Url.Action("EditStudent", new { Id=student.Id })">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a class="btn btn-danger" href="@Url.Action("DestroyStudent", new { Id = student.Id })">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@Html.ActionLink("Create New", "CreateStudent")
 
 <h2>Statistics</h2>
 

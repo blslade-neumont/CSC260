@@ -1,4 +1,6 @@
-﻿body {
+﻿
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -8,17 +10,6 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
 }
 
 /* QR code generator */
@@ -42,11 +33,15 @@ h2 {
     margin-top: 1em;
 }
 
+* {
+    --tableHeadBottomBorderColor: rgba(0, 0, 0, .1);
+}
+
 table {
     width: 100%;
 }
 thead {
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid var(--tableHeadBottomBorderColor);
 }
 th, td {
     padding: 4px 8px;
@@ -55,5 +50,10 @@ td:last-child, th:last-child {
     text-align: right;
 }
 tr:hover > td {
+    background: lightgray;
     background: rgba(0, 0, 0, .1);
+}
+
+.full-width {
+    width: 100%;
 }
