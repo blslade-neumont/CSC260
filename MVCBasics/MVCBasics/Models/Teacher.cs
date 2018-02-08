@@ -20,5 +20,8 @@ namespace MVCBasics.Models
         public int YearsTaught { get; set; }
         [Required]
         public TeacherStatus Status { get; set; }
+
+        [ForeignKey("TeacherId")]
+        public List<Enrollment> Enrollments { get; set; }
     }
 }

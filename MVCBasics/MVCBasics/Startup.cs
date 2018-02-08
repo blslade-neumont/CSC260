@@ -32,11 +32,13 @@ namespace MVCBasics
 
                 services.AddScoped<ICrudService<Teacher>, DbTeacherService>();
                 services.AddScoped<ICrudService<Student>, DbStudentService>();
+                services.AddScoped<ICrudService<Course>, DbCourseService>();
             }
             else
             {
                 services.AddSingleton<ICrudService<Teacher>, LocalTeacherService>();
                 services.AddSingleton<ICrudService<Student>, LocalStudentService>();
+                services.AddSingleton<ICrudService<Course>, LocalCourseService>();
             }
 
             //services.AddSingleton<SchoolDbInitializer>();
@@ -64,7 +66,7 @@ namespace MVCBasics
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=School}/{action=ShowAll}/{id?}");
+                    template: "{controller=School}/{action=Home}/{id?}");
             });
         }
     }

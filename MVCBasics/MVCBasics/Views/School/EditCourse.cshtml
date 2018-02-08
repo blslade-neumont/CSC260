@@ -1,0 +1,46 @@
+﻿@model MVCBasics.Models.Course
+@{
+    ViewData["Title"] = "Create Course";
+}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <h2>@(Model.Id != 0 ? "Edit" : "Create New") Course</h2>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+
+                    <fieldset>
+                        
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name)
+                            @Html.EditorFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Code)
+                            @Html.EditorFor(model => model.Code)
+                            @Html.ValidationMessageFor(model => model.Code)
+                        </div>
+
+                        <div class="form-actions">
+                            <input type="submit" class="btn btn-primary" value="@(Model.Id != 0 ? "Submit" : "Create")" />
+                            <a class="btn btn-link" href="@Url.Action("Courses")">Cancel</a>
+                        </div>
+
+                        <script>$(() => $('input#Name').focus());</script>
+
+                    </fieldset>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

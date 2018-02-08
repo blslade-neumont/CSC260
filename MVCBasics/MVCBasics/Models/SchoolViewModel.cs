@@ -10,5 +10,6 @@ namespace MVCBasics.Models
         public string Name { get; set; }
         public Student[] Students { get; set; }
         public Teacher[] Teachers { get; set; }
+        public Course[] Courses { get; set; }
     }
 }

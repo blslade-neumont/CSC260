@@ -1,0 +1,45 @@
+﻿@model SchoolViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+
+<div class="clearfix">
+    <div class="float-left">
+        <h2>Courses</h2>
+    </div>
+    <div class="float-right" style="margin-top: 2em;">
+        <a class="btn btn-primary" href="@Url.Action("CreateCourse")">
+            <i class="fas fa-plus mr-2"></i>Create New
+        </a>
+    </div>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in @Model.Courses)
+        {
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.Code</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-primary" href="@Url.Action("EditCourse", new { Id = course.Id })">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a class="btn btn-danger" href="@Url.Action("DestroyCourse", new { Id = course.Id })">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

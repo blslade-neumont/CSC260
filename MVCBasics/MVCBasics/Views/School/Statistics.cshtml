@@ -1,0 +1,38 @@
+﻿@model SchoolViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+
+<h2>Statistics</h2>
+
+@inject StatisticsService statsService
+@{
+    var stats = statsService.GetStatistics();
+    var ts = stats.Teacher;
+    var ss = stats.Student;
+}
+
+<p>
+    There are @ts.Count teachers;
+    @ts.Genders.Male% male, @ts.Genders.Female% female.
+
+    @ts.Status.FullTime% are full time, @ts.Status.Adjunct% are adjunct.
+
+    The average age taught is @ts.AverageYearsTaught years.
+</p>
+
+<p>
+    There are @ss.Count students;
+    @ss.Genders.Male% male, @ss.Genders.Female% female.
+
+    <ul>
+        <li>Undecided: @ss.Degrees.Undecided%</li>
+        <li>BSGD: @ss.Degrees.BSGD%</li>
+        <li>BSCS: @ss.Degrees.BSCS%</li>
+        <li>BSIS: @ss.Degrees.BSIS%</li>
+        <li>BSTM: @ss.Degrees.BSTM%</li>
+        <li>BSWD: @ss.Degrees.BSWD%</li>
+    </ul>
+</p>

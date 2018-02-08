@@ -7,22 +7,21 @@ using System.Threading.Tasks;
 
 namespace MVCBasics.Models
 {
-    public class Student
+    public class Course
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, MaxLength(20)]
+        [Required]
         public string Name { get; set; }
         [Required]
-        public Gender Gender { get; set; }
-        [Required, Range(1, 50)]
-        public int Cohort { get; set; }
-        public Degree? Degree { get; set; }
-        [InFuture, RequiredWithDegree, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? GraduationDate { get; set; }
+        public string Code { get; set; }
 
-        [ForeignKey("StudentId")]
+        public int TeacherId { get; set; }
+        [ForeignKey("TeacherId")]
+        public Teacher Teacher { get; set; }
+
+        [ForeignKey("CourseId")]
         public List<Enrollment> Enrollments { get; set; }
     }
 }
