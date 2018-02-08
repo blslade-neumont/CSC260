@@ -42,7 +42,7 @@
                             @Html.ValidationMessageFor(model => model.Status)
                         </div>
 
-                        <div>
+                        <div class="form-actions">
                             <input type="submit" class="btn btn-primary" value="@(Model.Id != 0 ? "Submit" : "Create")" />
                             <a class="btn btn-link" href="@Url.Action("ShowAll")">Cancel</a>
                         </div>
