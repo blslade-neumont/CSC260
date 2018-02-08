@@ -12,16 +12,19 @@ namespace MVCBasics.Controllers
         public SchoolController(
             ICrudService<Teacher> teacherService,
             ICrudService<Student> studentService,
-            ICrudService<Course> courseService
+            ICrudService<Course> courseService,
+            SchoolDbInitializer dbInitializer
         ) {
             this.teacherService = teacherService;
             this.studentService = studentService;
             this.courseService = courseService;
+            this.dbInitializer = dbInitializer;
         }
 
         private ICrudService<Teacher> teacherService;
         private ICrudService<Student> studentService;
         private ICrudService<Course> courseService;
+        private SchoolDbInitializer dbInitializer;
 
         #region List Views
         public IActionResult Home()
@@ -205,6 +208,14 @@ namespace MVCBasics.Controllers
         {
             await this.courseService.DestroyAsync(id);
             return RedirectToAction("Courses");
+        }
+        #endregion
+
+        #region Admin
+        public async Task<IActionResult> SeedData()
+        {
+            await this.dbInitializer.SeedData();
+            return RedirectToAction("Home");
         }
         #endregion
     }

@@ -12,14 +12,12 @@ namespace MVCBasics
         {
             this.teacherService = teacherService;
             this.studentService = studentService;
-            var task = this.seedData();
-            task.Wait();
         }
 
         private ICrudService<Teacher> teacherService;
         private ICrudService<Student> studentService;
 
-        private async Task seedData()
+        public async Task SeedData()
         {
             await createTeachers();
             await createStudents();

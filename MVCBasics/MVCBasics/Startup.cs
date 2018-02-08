@@ -41,7 +41,7 @@ namespace MVCBasics
                 services.AddSingleton<ICrudService<Course>, LocalCourseService>();
             }
 
-            //services.AddSingleton<SchoolDbInitializer>();
+            services.AddScoped<SchoolDbInitializer>();
             services.AddScoped<StatisticsService>();
 
             services.AddMvc();
