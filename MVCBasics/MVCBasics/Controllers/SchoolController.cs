@@ -62,6 +62,15 @@ namespace MVCBasics.Controllers
             };
             return View(school);
         }
+
+        public IActionResult Statistics()
+        {
+            var school = new SchoolViewModel()
+            {
+                Name = "Neumont College of Computer Science"
+            };
+            return View(school);
+        }
         #endregion
 
         #region Students
