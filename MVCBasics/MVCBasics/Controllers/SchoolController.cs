@@ -72,9 +72,8 @@ namespace MVCBasics.Controllers
             return View(teacher);
         }
 
-        public async Task<IActionResult> Courses()
+        public IActionResult Courses()
         {
-            //var courses = (await courseService.FindAllAsync()).ToArray();
             var courses = ctx.Courses.Include(course => course.Teacher).AsEnumerable().ToArray();
             var school = new SchoolViewModel()
             {
@@ -83,10 +82,14 @@ namespace MVCBasics.Controllers
             };
             return View(school);
         }
-        public async Task<IActionResult> Course(int id)
+        public IActionResult Course(int id)
         {
-            //var course = await this.courseService.GetAsync(id);
-            var course = ctx.Courses.Include(c => c.Teacher).Where(c => c.Id == id).FirstOrDefault();
+            var course = ctx.Courses
+                .Include(c => c.Teacher)
+                .Include(c => c.Enrollments)
+                .ThenInclude(e => e.Student)
+                .Where(c => c.Id == id)
+                .FirstOrDefault();
             if (course == null) return RedirectToAction("Courses");
             return View(course);
         }
@@ -235,6 +238,50 @@ namespace MVCBasics.Controllers
         {
             await this.courseService.DestroyAsync(id);
             return RedirectToAction("Courses");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddStudentToCourse(int id)
+        {
+            if (!int.TryParse(Request.Form["StudentId"], out var studentId)) return RedirectToAction("Course", new { Id = id });
+            var student = await studentService.GetAsync(studentId);
+            var course = await courseService.GetAsync(id);
+            if (course != null && student != null)
+            {
+                var preexisting = ctx.Enrollments
+                    .Where(e => e.CourseId == id && e.StudentId == studentId)
+                    .FirstOrDefault();
+                if (preexisting == null)
+                {
+                    await ctx.Enrollments.AddAsync(new Enrollment()
+                    {
+                        StudentId = studentId,
+                        CourseId = id
+                    });
+                    await ctx.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Course", new { Id = id });
+        }
+
+        public async Task<IActionResult> RemoveStudentFromCourse(int id, int secondaryId)
+        {
+            var courseId = id;
+            var studentId = secondaryId;
+            var course = await courseService.GetAsync(id);
+            var student = await studentService.GetAsync(studentId);
+            if (course != null && student != null)
+            {
+                var preexisting = ctx.Enrollments
+                    .Where(e => e.CourseId == id && e.StudentId == studentId)
+                    .FirstOrDefault();
+                if (preexisting != null)
+                {
+                    ctx.Remove(preexisting);
+                    await ctx.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Course", new { Id = id });
         }
         #endregion
 
