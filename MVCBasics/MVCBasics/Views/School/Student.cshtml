@@ -1,0 +1,26 @@
+﻿@model MVCBasics.Models.Student
+@{
+    ViewData["Title"] = "Student";
+}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <h2>Student: @Model.Name</h2>
+
+                <h4>Gender: @Model.Gender</h4>
+                <h4>Cohort: @Model.Cohort</h4>
+                <h4>Degree: @Model.Degree</h4>
+                <h4>Graduation Date: @Model.GraduationDate</h4>
+
+                <div class="form-actions">
+                    <a class="btn btn-primary" href="@Url.Action("Students")">Back</a>
+                    <a class="btn btn-link" href="@Url.Action("EditStudent", new { @Model.Id })">Edit</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

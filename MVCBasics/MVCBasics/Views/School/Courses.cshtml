@@ -20,6 +20,7 @@
         <tr>
             <th>Name</th>
             <th>Code</th>
+            <th>Teacher</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,8 +28,9 @@
         @foreach (var course in @Model.Courses)
         {
             <tr>
-                <td>@course.Name</td>
+                <td><a href="@Url.Action("Course", new { course.Id })">@course.Name</a></td>
                 <td>@course.Code</td>
+                <td><a href="@Url.Action("Teacher", new { @course.Teacher.Id })">@course.Teacher.Name</a></td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         <a class="btn btn-primary" href="@Url.Action("EditCourse", new { Id = course.Id })">

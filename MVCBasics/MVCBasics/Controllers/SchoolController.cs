@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVCBasics.Models;
 using System;
 using System.Collections.Generic;
@@ -13,18 +14,21 @@ namespace MVCBasics.Controllers
             ICrudService<Teacher> teacherService,
             ICrudService<Student> studentService,
             ICrudService<Course> courseService,
+            SchoolDbContext ctx,
             SchoolDbInitializer dbInitializer
         ) {
             this.teacherService = teacherService;
             this.studentService = studentService;
             this.courseService = courseService;
             this.dbInitializer = dbInitializer;
+            this.ctx = ctx;
         }
 
         private ICrudService<Teacher> teacherService;
         private ICrudService<Student> studentService;
         private ICrudService<Course> courseService;
         private SchoolDbInitializer dbInitializer;
+        private SchoolDbContext ctx;
 
         #region List Views
         public IActionResult Home()
@@ -45,6 +49,12 @@ namespace MVCBasics.Controllers
             };
             return View(school);
         }
+        public async Task<IActionResult> Student(int id)
+        {
+            var student = await this.studentService.GetAsync(id);
+            if (student == null) return RedirectToAction("Students");
+            return View(student);
+        }
 
         public async Task<IActionResult> Teachers()
         {
@@ -55,15 +65,30 @@ namespace MVCBasics.Controllers
             };
             return View(school);
         }
+        public async Task<IActionResult> Teacher(int id)
+        {
+            var teacher = await this.teacherService.GetAsync(id);
+            if (teacher == null) return RedirectToAction("Teachers");
+            return View(teacher);
+        }
 
         public async Task<IActionResult> Courses()
         {
+            //var courses = (await courseService.FindAllAsync()).ToArray();
+            var courses = ctx.Courses.Include(course => course.Teacher).AsEnumerable().ToArray();
             var school = new SchoolViewModel()
             {
                 Name = "Neumont College of Computer Science",
-                Courses = (await courseService.FindAllAsync()).ToArray()
+                Courses = courses
             };
             return View(school);
+        }
+        public async Task<IActionResult> Course(int id)
+        {
+            //var course = await this.courseService.GetAsync(id);
+            var course = ctx.Courses.Include(c => c.Teacher).Where(c => c.Id == id).FirstOrDefault();
+            if (course == null) return RedirectToAction("Courses");
+            return View(course);
         }
 
         public IActionResult Statistics()
@@ -86,8 +111,8 @@ namespace MVCBasics.Controllers
         {
             if (ModelState.IsValid)
             {
-                await studentService.CreateAsync(student);
-                return RedirectToAction("Students");
+                student = await studentService.CreateAsync(student);
+                return RedirectToAction("Student", new { student.Id });
             }
             else
             {
@@ -98,6 +123,7 @@ namespace MVCBasics.Controllers
         public async Task<IActionResult> EditStudent(int id)
         {
             var student = await this.studentService.GetAsync(id);
+            if (student == null) return RedirectToAction("Students");
             return View(student);
         }
         [HttpPost]
@@ -106,7 +132,7 @@ namespace MVCBasics.Controllers
             if (ModelState.IsValid)
             {
                 await studentService.UpdateAsync(student);
-                return RedirectToAction("Students");
+                return RedirectToAction("Student", new { Id = id });
             }
             else
             {
@@ -131,8 +157,9 @@ namespace MVCBasics.Controllers
         {
             if (ModelState.IsValid)
             {
-                await teacherService.CreateAsync(teacher);
-                return RedirectToAction("Teachers");
+                teacher = await teacherService.CreateAsync(teacher);
+                if (teacher == null) return RedirectToAction("Teachers");
+                return RedirectToAction("Teacher", new { teacher.Id });
             }
             else
             {
@@ -151,7 +178,7 @@ namespace MVCBasics.Controllers
             if (ModelState.IsValid)
             {
                 await teacherService.UpdateAsync(teacher);
-                return RedirectToAction("Teachers");
+                return RedirectToAction("Teacher", new { teacher.Id });
             }
             else
             {
@@ -176,8 +203,8 @@ namespace MVCBasics.Controllers
         {
             if (ModelState.IsValid)
             {
-                await courseService.CreateAsync(course);
-                return RedirectToAction("Courses");
+                course = await courseService.CreateAsync(course);
+                return RedirectToAction("Course", new { course.Id });
             }
             else
             {
@@ -196,7 +223,7 @@ namespace MVCBasics.Controllers
             if (ModelState.IsValid)
             {
                 await courseService.UpdateAsync(course);
-                return RedirectToAction("Courses");
+                return RedirectToAction("Course", new { course.Id });
             }
             else
             {

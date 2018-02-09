@@ -29,16 +29,16 @@
         @foreach (var teacher in @Model.Teachers)
         {
             <tr>
-                <td>@teacher.Name</td>
+                <td><a href="@Url.Action("Teacher", new { teacher.Id })">@teacher.Name</a></td>
                 <td>@teacher.Gender.ToString()</td>
                 <td>@teacher.YearsTaught years</td>
                 <td>@teacher.Status.ToString()</td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-primary" href="@Url.Action("EditTeacher", new { Id=teacher.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("EditTeacher", new { teacher.Id })">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a class="btn btn-danger" href="@Url.Action("DestroyTeacher", new { Id = teacher.Id })">
+                        <a class="btn btn-danger" href="@Url.Action("DestroyTeacher", new { teacher.Id })">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>

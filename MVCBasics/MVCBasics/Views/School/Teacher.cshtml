@@ -1,0 +1,25 @@
+﻿@model MVCBasics.Models.Teacher
+@{
+    ViewData["Title"] = "Teacher";
+}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <h2>Teacher: @Model.Name</h2>
+
+                <h4>Gender: @Model.Gender</h4>
+                <h4>Years Taught: @Model.YearsTaught</h4>
+                <h4>Status: @Model.Status</h4>
+
+                <div class="form-actions">
+                    <a class="btn btn-primary" href="@Url.Action("Teachers")">Back</a>
+                    <a class="btn btn-link" href="@Url.Action("EditTeacher", new { @Model.Id })">Edit</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

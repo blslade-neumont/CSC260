@@ -14,30 +14,52 @@
                 {
                     @Html.ValidationSummary(true)
 
-                    <fieldset>
-                        
-                        @Html.HiddenFor(model => model.Id)
+                <fieldset>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Name)
-                            @Html.EditorFor(model => model.Name)
-                            @Html.ValidationMessageFor(model => model.Name)
-                        </div>
+                    @Html.HiddenFor(model => model.Id)
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Code)
-                            @Html.EditorFor(model => model.Code)
-                            @Html.ValidationMessageFor(model => model.Code)
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name)
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
 
-                        <div class="form-actions">
-                            <input type="submit" class="btn btn-primary" value="@(Model.Id != 0 ? "Submit" : "Create")" />
-                            <a class="btn btn-link" href="@Url.Action("Courses")">Cancel</a>
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Code)
+                        @Html.EditorFor(model => model.Code)
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
 
-                        <script>$(() => $('input#Name').focus());</script>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Teacher)
+                        @inject ICrudService<Teacher> teacherService
+                        @{ 
+                            var teachers = await teacherService.FindAllAsync();
+                        }
+                        <select class="form-control" id="@Html.IdFor(model => model.TeacherId)" name="@Html.NameFor(model => model.TeacherId)">
+                            @foreach (Teacher teacher in teachers)
+                            {
+                                if (teacher.Id == Model.TeacherId)
+                                {
+                                    <option value="@teacher.Id" selected="selected">@teacher.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@teacher.Id">@teacher.Name</option>
+                                }
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.TeacherId)
+                    </div>
 
-                    </fieldset>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" value="@(Model.Id != 0 ? "Submit" : "Create")" />
+                        <a class="btn btn-link" href="@(Model.Id != 0 ? Url.Action("Course", new { Model.Id }) : Url.Action("Courses"))">Cancel</a>
+                    </div>
+
+                    <script>$(() => $('input#Name').focus());</script>
+
+                </fieldset>
                 }
 
             </div>
