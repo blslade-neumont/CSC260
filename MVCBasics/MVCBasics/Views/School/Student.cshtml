@@ -14,8 +14,34 @@
                 <h4>Cohort: @Model.Cohort</h4>
                 <h4>Degree: @Model.Degree</h4>
                 <h4>Graduation Date: @Model.GraduationDate</h4>
+                
+                <h3 class="mt-5">Courses</h3>
 
-                <div class="form-actions">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in @Model.Enrollments.Select(e => e.Course))
+                        {
+                            <tr>
+                                <td><a href="@Url.Action("Course", new { course.Id })">@course.Name</a></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-danger" title="Remove student from the class page instead" disabled="disabled" href="@Url.Action("RemoveStudentFromCourse", new { course.Id, secondaryId = Model.Id })">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="form-actions mt-5">
                     <a class="btn btn-primary" href="@Url.Action("Students")">Back</a>
                     <a class="btn btn-link" href="@Url.Action("EditStudent", new { @Model.Id })">Edit</a>
                 </div>

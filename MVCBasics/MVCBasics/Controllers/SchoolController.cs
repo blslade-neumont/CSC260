@@ -49,9 +49,13 @@ namespace MVCBasics.Controllers
             };
             return View(school);
         }
-        public async Task<IActionResult> Student(int id)
+        public IActionResult Student(int id)
         {
-            var student = await this.studentService.GetAsync(id);
+            var student = ctx.Students
+                .Include(c => c.Enrollments)
+                .ThenInclude(e => e.Course)
+                .Where(c => c.Id == id)
+                .FirstOrDefault();
             if (student == null) return RedirectToAction("Students");
             return View(student);
         }
@@ -243,7 +247,10 @@ namespace MVCBasics.Controllers
         [HttpPost]
         public async Task<IActionResult> AddStudentToCourse(int id)
         {
-            if (!int.TryParse(Request.Form["StudentId"], out var studentId)) return RedirectToAction("Course", new { Id = id });
+            if (!int.TryParse(Request.Form["StudentId"], out var studentId) || !Enum.TryParse<LetterGrade>(Request.Form["LetterGrade"], out var letterGrade))
+            {
+                return RedirectToAction("Course", new { Id = id });
+            }
             var student = await studentService.GetAsync(studentId);
             var course = await courseService.GetAsync(id);
             if (course != null && student != null)
@@ -256,10 +263,16 @@ namespace MVCBasics.Controllers
                     await ctx.Enrollments.AddAsync(new Enrollment()
                     {
                         StudentId = studentId,
-                        CourseId = id
+                        CourseId = id,
+                        Grade = letterGrade
                     });
-                    await ctx.SaveChangesAsync();
                 }
+                else if (preexisting.Grade != letterGrade)
+                {
+                    preexisting.Grade = letterGrade;
+                    ctx.Enrollments.Update(preexisting);
+                }
+                await ctx.SaveChangesAsync();
             }
             return RedirectToAction("Course", new { Id = id });
         }

@@ -19,14 +19,17 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Grade</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var student in @Model.Enrollments.Select(e => e.Student))
+                        @foreach (var enrollment in @Model.Enrollments)
                         {
+                            var student = enrollment.Student;
                             <tr>
                                 <td><a href="@Url.Action("Student", new { @student.Id })">@student.Name</a></td>
+                                <td>@enrollment.Grade</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a class="btn btn-danger" href="@Url.Action("RemoveStudentFromCourse", new { Model.Id, secondaryId = student.Id })">
@@ -54,6 +57,14 @@
                                 {
                                     <option value="@student.Id">@student.Name</option>
                                 }
+                            </select>
+                            
+                            <select class="form-control ml-3" id="LetterGrade" name="LetterGrade">
+                                <option value="@LetterGrade.A" selected>A</option>
+                                <option value="@LetterGrade.B">B</option>
+                                <option value="@LetterGrade.C">C</option>
+                                <option value="@LetterGrade.D">D</option>
+                                <option value="@LetterGrade.F">F</option>
                             </select>
                         </div>
                         

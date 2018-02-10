@@ -18,5 +18,7 @@ namespace MVCBasics.Models
         public int StudentId { get; set; }
         [ForeignKey("StudentId")]
         public Student Student { get; set; }
+
+        public LetterGrade Grade { get; set; }
     }
 }

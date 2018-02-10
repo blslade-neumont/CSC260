@@ -11,9 +11,10 @@ using System;
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    partial class SchoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180210010630_AddEnrollmentPayload")]
+    partial class AddEnrollmentPayload
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
