@@ -36,9 +36,7 @@ namespace MVCBasics
             }
             else
             {
-                services.AddSingleton<ICrudService<Teacher>, LocalTeacherService>();
-                services.AddSingleton<ICrudService<Student>, LocalStudentService>();
-                services.AddSingleton<ICrudService<Course>, LocalCourseService>();
+                throw new NotSupportedException("You must start the application with the database configured and enabled");
             }
 
             services.AddScoped<SchoolDbInitializer>();
