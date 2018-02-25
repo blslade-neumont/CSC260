@@ -10,7 +10,7 @@
         <h2>Courses</h2>
     </div>
     <div class="float-right" style="margin-top: 2em;">
-        <a class="btn btn-primary" href="@Url.Action("CreateCourse")">
+        <a class="btn btn-primary" href="@Url.Action("Create")">
             <i class="fas fa-plus mr-2"></i>Create New
         </a>
     </div>
@@ -28,15 +28,15 @@
         @foreach (var course in @Model.Courses)
         {
             <tr>
-                <td><a href="@Url.Action("Course", new { course.Id })">@course.Name</a></td>
+                <td><a href="@Url.Action("View", new { course.Id })">@course.Name</a></td>
                 <td>@course.Code</td>
-                <td><a href="@Url.Action("Teacher", new { @course.Teacher.Id })">@course.Teacher.Name</a></td>
+                <td><a href="@Url.Action("View", "Teacher", new { @course.Teacher.Id })">@course.Teacher.Name</a></td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-primary" href="@Url.Action("EditCourse", new { Id = course.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("Edit", new { Id = course.Id })">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a class="btn btn-danger" href="@Url.Action("DestroyCourse", new { Id = course.Id })">
+                        <a class="btn btn-danger" href="@Url.Action("Destroy", new { Id = course.Id })">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>

@@ -11,7 +11,7 @@
                 <h2>Course: @Model.Name</h2>
 
                 <h4>Code: @Model.Code</h4>
-                <h4>Teacher: <a href="@Url.Action("Teacher", new { @Model.Teacher.Id })">@Model.Teacher.Name</a></h4>
+                <h4>Teacher: <a href="@Url.Action("View", "Teacher", new { @Model.Teacher.Id })">@Model.Teacher.Name</a></h4>
 
                 <h3 class="mt-5">Students</h3>
 
@@ -28,11 +28,11 @@
                         {
                             var student = enrollment.Student;
                             <tr>
-                                <td><a href="@Url.Action("Student", new { @student.Id })">@student.Name</a></td>
+                                <td><a href="@Url.Action("View", "Student", new { @student.Id })">@student.Name</a></td>
                                 <td>@enrollment.Grade</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a class="btn btn-danger" href="@Url.Action("RemoveStudentFromCourse", new { Model.Id, secondaryId = student.Id })">
+                                        <a class="btn btn-danger" href="@Url.Action("RemoveStudent", new { Model.Id, secondaryId = student.Id })">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
@@ -43,7 +43,7 @@
                 </table>
                 
                 <div class="mt-3">
-                    @using (Html.BeginForm("AddStudentToCourse", "School", new { Model.Id }, FormMethod.Post, null, new { @class = "form-inline" }))
+                    @using (Html.BeginForm("AddStudent", "Course", new { Model.Id }, FormMethod.Post, null, new { @class = "form-inline" }))
                     {
                         @Html.ValidationSummary(true)
                         
@@ -77,8 +77,8 @@
                 </div>
 
                 <div class="form-actions mt-5">
-                    <a class="btn btn-primary" href="@Url.Action("Courses")">Back</a>
-                    <a class="btn btn-link" href="@Url.Action("EditCourse", new { @Model.Id })">Edit</a>
+                    <a class="btn btn-primary" href="@Url.Action("List")">Back</a>
+                    <a class="btn btn-link" href="@Url.Action("Edit", new { @Model.Id })">Edit</a>
                 </div>
 
             </div>

@@ -10,7 +10,7 @@
         <h2>Students</h2>
     </div>
     <div class="float-right" style="margin-top: 2em;">
-        <a class="btn btn-primary" href="@Url.Action("CreateStudent")">
+        <a class="btn btn-primary" href="@Url.Action("Create")">
             <i class="fas fa-plus mr-2"></i>Create New
         </a>
     </div>
@@ -30,7 +30,7 @@
         @foreach (var student in @Model.Students)
         {
             <tr>
-                <td><a href="@Url.Action("Student", new { student.Id })">@student.Name</a></td>
+                <td><a href="@Url.Action("View", new { student.Id })">@student.Name</a></td>
                 <td>@student.Gender.ToString()</td>
                 <td>Cohort @student.Cohort</td>
                 <td>@(student.Degree == null ? "None" : student.Degree.Value.ToString())</td>
@@ -42,10 +42,10 @@
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-primary" href="@Url.Action("EditStudent", new { student.Id })">
+                        <a class="btn btn-primary" href="@Url.Action("Edit", new { student.Id })">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <a class="btn btn-danger" href="@Url.Action("DestroyStudent", new { student.Id })">
+                        <a class="btn btn-danger" href="@Url.Action("Destroy", new { student.Id })">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>

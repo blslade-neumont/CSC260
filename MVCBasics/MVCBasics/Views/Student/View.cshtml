@@ -28,10 +28,10 @@
                         @foreach (var course in @Model.Enrollments.Select(e => e.Course))
                         {
                             <tr>
-                                <td><a href="@Url.Action("Course", new { course.Id })">@course.Name</a></td>
+                                <td><a href="@Url.Action("View", "Course", new { course.Id })">@course.Name</a></td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <button type="button" class="btn btn-danger" title="Remove student from the class page instead" disabled="disabled" href="@Url.Action("RemoveStudentFromCourse", new { course.Id, secondaryId = Model.Id })">
+                                        <button type="button" class="btn btn-danger" title="Remove student from the class page instead" disabled="disabled" href="@Url.Action("Course", "RemoveStudent", new { course.Id, secondaryId = Model.Id })">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -42,8 +42,8 @@
                 </table>
 
                 <div class="form-actions mt-5">
-                    <a class="btn btn-primary" href="@Url.Action("Students")">Back</a>
-                    <a class="btn btn-link" href="@Url.Action("EditStudent", new { @Model.Id })">Edit</a>
+                    <a class="btn btn-primary" href="@Url.Action("List")">Back</a>
+                    <a class="btn btn-link" href="@Url.Action("Edit", new { @Model.Id })">Edit</a>
                 </div>
 
             </div>

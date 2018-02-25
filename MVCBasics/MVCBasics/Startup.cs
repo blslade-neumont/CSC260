@@ -64,7 +64,7 @@ namespace MVCBasics
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=School}/{action=Home}/{id?}/{secondaryId?}");
+                    template: "{controller=Home}/{action=Index}/{id?}/{secondaryId?}");
             });
         }
     }

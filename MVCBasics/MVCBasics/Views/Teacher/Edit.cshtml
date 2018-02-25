@@ -1,6 +1,6 @@
-﻿@model MVCBasics.Models.Student
+﻿@model MVCBasics.Models.Teacher
 @{
-    ViewData["Title"] = "Create Student";
+    ViewData["Title"] = "Create Teacher";
 }
 
 <div class="section">
@@ -8,14 +8,14 @@
         <div class="row">
             <div class="col-12">
 
-                <h2>@(Model.Id != 0 ? "Edit" : "Create New") Student</h2>
+                <h2>@(Model.Id != 0 ? "Edit" : "Create New") Teacher</h2>
 
                 @using (Html.BeginForm())
                 {
                     @Html.ValidationSummary(true)
-
+                    
                     <fieldset>
-                        
+
                         @Html.HiddenFor(model => model.Id)
 
                         <div class="form-group">
@@ -31,28 +31,22 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Cohort)
-                            @Html.EditorFor(model => model.Cohort)
-                            @Html.ValidationMessageFor(model => model.Cohort)
+                            @Html.LabelFor(model => model.YearsTaught)
+                            @Html.EditorFor(model => model.YearsTaught)
+                            @Html.ValidationMessageFor(model => model.YearsTaught)
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Degree)
-                            @Html.EditorFor(model => model.Degree)
-                            @Html.ValidationMessageFor(model => model.Degree)
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.GraduationDate)
-                            @Html.EditorFor(model => model.GraduationDate)
-                            @Html.ValidationMessageFor(model => model.GraduationDate)
+                            @Html.LabelFor(model => model.Status)
+                            @Html.EditorFor(model => model.Status)
+                            @Html.ValidationMessageFor(model => model.Status)
                         </div>
 
                         <div class="form-actions">
                             <input type="submit" class="btn btn-primary" value="@(Model.Id != 0 ? "Submit" : "Create")" />
-                            <a class="btn btn-link" href="@(Model.Id != 0 ? Url.Action("Student", new { Model.Id }) : Url.Action("Students"))">Cancel</a>
+                            <a class="btn btn-link" href="@(Model.Id != 0 ? Url.Action("View", new { Model.Id }) : Url.Action("List"))">Cancel</a>
                         </div>
-
+                        
                         <script>$(() => $('input#Name').focus());</script>
 
                     </fieldset>
