@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MVCBasics
 {
-    public class SchoolDbContext : DbContext
+    public class SchoolDbContext : IdentityDbContext<User>
     {
         public SchoolDbContext(DbContextOptions<SchoolDbContext> opts)
             : base(opts)
@@ -26,6 +27,7 @@ namespace MVCBasics
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
             modelBuilder.Entity<Course>().ToTable("Courses");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
