@@ -34,18 +34,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("List", "Student")">Students</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("List", "Teacher")">Teachers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("List", "Course")">Courses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Statistics", "Statistics")">Statistics</a>
-                    </li>
+                    @if (ViewContext.HttpContext.User?.IsInRole("Admin, Registrar") ?? false)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("List", "Student")">Students</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("List", "Teacher")">Teachers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("List", "Course")">Courses</a>
+                        </li>
+                    }
+                    @if (ViewContext.HttpContext.User != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Statistics", "Statistics")">Statistics</a>
+                        </li>
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

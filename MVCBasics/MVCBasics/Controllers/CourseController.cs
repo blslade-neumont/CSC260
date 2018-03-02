@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCBasics.Models;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MVCBasics.Controllers
 {
+    [Authorize(Roles = "Admin, Registrar")]
     public class CourseController : Controller
     {
         public CourseController(

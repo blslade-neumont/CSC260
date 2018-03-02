@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCBasics.Models;
 using System;
@@ -23,11 +24,13 @@ namespace MVCBasics.Controllers
         private SchoolDbContext ctx;
 
         #region Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View("Edit", new Student());
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Student student)
         {
             if (ModelState.IsValid)
@@ -44,6 +47,7 @@ namespace MVCBasics.Controllers
         #endregion
 
         #region Read
+        [Authorize(Roles = "Admin, Registrar")]
         public async Task<IActionResult> List()
         {
             var school = new SchoolViewModel()
@@ -54,6 +58,7 @@ namespace MVCBasics.Controllers
             return View(school);
         }
 
+        [Authorize(Policy = "StudentIsSelf")]
         public IActionResult View(int id)
         {
             var student = ctx.Students
@@ -67,6 +72,7 @@ namespace MVCBasics.Controllers
         #endregion
 
         #region Update
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var student = await this.studentService.GetAsync(id);
@@ -74,6 +80,7 @@ namespace MVCBasics.Controllers
             return View(student);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, Student student)
         {
             if (ModelState.IsValid)
@@ -89,6 +96,7 @@ namespace MVCBasics.Controllers
         #endregion
 
         #region Destroy
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Destroy(int id)
         {
             await this.studentService.DestroyAsync(id);

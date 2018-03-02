@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVCBasics.Models;
+using MVCBasics.Policies;
 using MVCBasics.Services;
 
 namespace MVCBasics
@@ -81,6 +84,22 @@ namespace MVCBasics
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("StudentIsSelf", policy =>
+                {
+                    policy.AddRequirements(new StudentIsSelfPolicy());
+                    policy.RequireAuthenticatedUser();
+                    policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+                });
+                options.AddPolicy("TeacherIsSelf", policy =>
+                {
+                    policy.AddRequirements(new TeacherIsSelfPolicy());
+                    policy.RequireAuthenticatedUser();
+                    policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,13 +118,54 @@ namespace MVCBasics
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            
+            var rolesTask = CreateRoles(app, env);
+            rolesTask.Wait();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}/{secondaryId?}");
             });
+        }
+
+        private async Task CreateRoles(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<SchoolDbContext>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync("Admin"))
+                {
+                    var role = new IdentityRole();
+                    role.Name = "Admin";
+                    await roleManager.CreateAsync(role);
+                }
+
+                if (!await roleManager.RoleExistsAsync("Student"))
+                {
+                    var role = new IdentityRole();
+                    role.Name = "Student";
+                    await roleManager.CreateAsync(role);
+                }
+
+                if (!await roleManager.RoleExistsAsync("Teacher"))
+                {
+                    var role = new IdentityRole();
+                    role.Name = "Teacher";
+                    await roleManager.CreateAsync(role);
+                }
+
+                if (!await roleManager.RoleExistsAsync("Registrar"))
+                {
+                    var role = new IdentityRole();
+                    role.Name = "Registrar";
+                    await roleManager.CreateAsync(role);
+                }
+            }
         }
     }
 }

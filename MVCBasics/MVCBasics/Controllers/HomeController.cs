@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCBasics.Models;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace MVCBasics.Controllers
         }
 
         #region Admin
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SeedData()
         {
             await this.dbInitializer.SeedData();
