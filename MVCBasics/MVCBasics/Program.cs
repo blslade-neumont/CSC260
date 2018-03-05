@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MVCBasics.Migrations;
 
 namespace MVCBasics
 {
@@ -14,7 +15,11 @@ namespace MVCBasics
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            SeedData.Initialize(host.Services).Wait();
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

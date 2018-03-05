@@ -11,7 +11,7 @@ namespace MVCBasics.Policies
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, TeacherIsSelfPolicy requirement)
         {
-            if (context.User.HasClaim(ClaimTypes.Role, "Admin") || context.User.HasClaim(ClaimTypes.Role, "Registrar"))
+            if (context.User.HasClaim(ClaimTypes.Role, "Admin") || context.User.HasClaim(ClaimTypes.Role, "Registrar") || context.User.HasClaim(ClaimTypes.Role, "Teacher"))
             {
                 context.Succeed(requirement);
             }

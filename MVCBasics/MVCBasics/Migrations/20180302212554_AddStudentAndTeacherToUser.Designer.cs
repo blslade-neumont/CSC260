@@ -11,9 +11,10 @@ using System;
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    partial class SchoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180302212554_AddStudentAndTeacherToUser")]
+    partial class AddStudentAndTeacherToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,9 +248,9 @@ namespace MVCBasics.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<int>("StudentId");
 
-                    b.Property<int?>("TeacherId");
+                    b.Property<int>("TeacherId");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -347,11 +348,13 @@ namespace MVCBasics.Migrations
                 {
                     b.HasOne("MVCBasics.Models.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MVCBasics.Models.Teacher", "Teacher")
                         .WithMany()
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

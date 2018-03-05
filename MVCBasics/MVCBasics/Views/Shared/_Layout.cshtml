@@ -34,7 +34,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
                     </li>
-                    @if (ViewContext.HttpContext.User?.IsInRole("Admin, Registrar") ?? false)
+                    @if ((ViewContext.HttpContext.User?.IsInRole("Admin") ?? false) || (ViewContext.HttpContext.User?.IsInRole("Registrar") ?? false))
                     {
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("List", "Student")">Students</a>
@@ -46,7 +46,7 @@
                             <a class="nav-link" href="@Url.Action("List", "Course")">Courses</a>
                         </li>
                     }
-                    @if (ViewContext.HttpContext.User != null)
+                    @if (ViewContext.HttpContext.User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Statistics", "Statistics")">Statistics</a>

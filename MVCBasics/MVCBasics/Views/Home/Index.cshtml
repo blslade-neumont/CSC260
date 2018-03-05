@@ -1,23 +1,52 @@
-﻿@model SchoolViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@model SchoolViewModel
+@inject UserManager<User> userManager
 @{
     ViewData["Title"] = Model.Name;
+
+    User currentUser = null;
+    var identity = ViewContext.HttpContext.User.Identity;
+    if (identity.IsAuthenticated)
+    {
+        currentUser = await userManager.FindByNameAsync(identity.Name);
+    }
 }
 
 <img src="~/images/nu.png" class="full-width" />
 
 <h1>@Model.Name</h1>
 
-<p class="lead">
-    TODO: more details
-</p>
 
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-    nisi ut aliquip ex ea commodo consequat.
-    Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur.
-    Excepteur sint occaecat cupidatat non proident,
-    sunt in culpa qui officia deserunt mollit anim id est laborum.
-</p>
+@if (ViewContext.HttpContext.User?.IsInRole("Student") ?? false)
+{
+    <p class="lead">Welcome, Student!</p>
+
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("View", "Student", new { Id = currentUser.StudentId })">View your student profile</a>
+    </li>
+}
+else if (ViewContext.HttpContext.User?.IsInRole("Teacher") ?? false)
+{
+    <p class="lead">Welcome, Teacher!</p>
+
+    <li class="nav-item">
+        <a class="nav-link" href="@Url.Action("View", "Teacher", new { Id = currentUser.TeacherId })">View your teacher profile</a>
+    </li>
+}
+else
+{
+    <p class="lead">
+        TODO: more details
+    </p>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+        nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint occaecat cupidatat non proident,
+        sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+}

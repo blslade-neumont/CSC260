@@ -10,5 +10,12 @@ namespace MVCBasics.Models
 {
     public class User : IdentityUser
     {
+        public int? StudentId { get; set; } = null;
+        [ForeignKey("StudentId")]
+        public Student Student { get; set; } = null;
+
+        public int? TeacherId { get; set; } = null;
+        [ForeignKey("TeacherId")]
+        public Teacher Teacher { get; set; } = null;
     }
 }

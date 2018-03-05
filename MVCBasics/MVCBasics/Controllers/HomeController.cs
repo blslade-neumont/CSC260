@@ -11,13 +11,10 @@ namespace MVCBasics.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(SchoolDbInitializer dbInitializer)
+        public HomeController()
         {
-            this.dbInitializer = dbInitializer;
         }
-
-        private SchoolDbInitializer dbInitializer;
-
+        
         public IActionResult Index()
         {
             var school = new SchoolViewModel()
@@ -31,14 +28,5 @@ namespace MVCBasics.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        #region Admin
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SeedData()
-        {
-            await this.dbInitializer.SeedData();
-            return RedirectToAction("Home");
-        }
-        #endregion
     }
 }

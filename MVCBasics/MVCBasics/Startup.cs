@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,8 +42,7 @@ namespace MVCBasics
             {
                 throw new NotSupportedException("You must start the application with the database configured and enabled");
             }
-
-            services.AddScoped<SchoolDbInitializer>();
+            
             services.AddScoped<StatisticsService>();
 
             services.AddIdentity<User, IdentityRole>()
@@ -91,13 +89,13 @@ namespace MVCBasics
                 {
                     policy.AddRequirements(new StudentIsSelfPolicy());
                     policy.RequireAuthenticatedUser();
-                    policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+                    //policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
                 });
                 options.AddPolicy("TeacherIsSelf", policy =>
                 {
                     policy.AddRequirements(new TeacherIsSelfPolicy());
                     policy.RequireAuthenticatedUser();
-                    policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+                    //policy.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
                 });
             });
         }
@@ -119,53 +117,12 @@ namespace MVCBasics
 
             app.UseAuthentication();
             
-            var rolesTask = CreateRoles(app, env);
-            rolesTask.Wait();
-            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}/{secondaryId?}");
             });
-        }
-
-        private async Task CreateRoles(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<SchoolDbContext>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-                if (!await roleManager.RoleExistsAsync("Admin"))
-                {
-                    var role = new IdentityRole();
-                    role.Name = "Admin";
-                    await roleManager.CreateAsync(role);
-                }
-
-                if (!await roleManager.RoleExistsAsync("Student"))
-                {
-                    var role = new IdentityRole();
-                    role.Name = "Student";
-                    await roleManager.CreateAsync(role);
-                }
-
-                if (!await roleManager.RoleExistsAsync("Teacher"))
-                {
-                    var role = new IdentityRole();
-                    role.Name = "Teacher";
-                    await roleManager.CreateAsync(role);
-                }
-
-                if (!await roleManager.RoleExistsAsync("Registrar"))
-                {
-                    var role = new IdentityRole();
-                    role.Name = "Registrar";
-                    await roleManager.CreateAsync(role);
-                }
-            }
         }
     }
 }

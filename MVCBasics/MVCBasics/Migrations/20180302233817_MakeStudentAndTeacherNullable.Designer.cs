@@ -11,8 +11,8 @@ using System;
 namespace MVCBasics.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    [Migration("20180301010317_AddUser")]
-    partial class AddUser
+    [Migration("20180302233817_MakeStudentAndTeacherNullable")]
+    partial class MakeStudentAndTeacherNullable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,6 +248,10 @@ namespace MVCBasics.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int?>("StudentId");
+
+                    b.Property<int?>("TeacherId");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -262,6 +266,10 @@ namespace MVCBasics.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -333,6 +341,17 @@ namespace MVCBasics.Migrations
 
                     b.HasOne("MVCBasics.Models.Teacher")
                         .WithMany("Enrollments")
+                        .HasForeignKey("TeacherId");
+                });
+
+            modelBuilder.Entity("MVCBasics.Models.User", b =>
+                {
+                    b.HasOne("MVCBasics.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("MVCBasics.Models.Teacher", "Teacher")
+                        .WithMany()
                         .HasForeignKey("TeacherId");
                 });
 #pragma warning restore 612, 618
